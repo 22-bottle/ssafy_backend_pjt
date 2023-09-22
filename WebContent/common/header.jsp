@@ -10,7 +10,7 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-white mt-3">
         <ul class="navbar-nav container">
             <li><a href="${ root }"><img src="assets/img/logo.png" width="120" alt=""></img></a></li>
-            <li class="nav-item"> <a class="navbar-brand font-weight-bold" href="./map.html">지역별관광지</a></li>
+            <li class="nav-item"> <a class="navbar-brand font-weight-bold" href="./map.jsp">지역별관광지</a></li>
             <li class="nav-item"> <a class="navbar-brand" href="#">나의여행계획</a></li>
             <li class="nav-item"> <a class="navbar-brand" href="#">핫플자랑하기</a></li>
             <li class="nav-item"> <a class="navbar-brand" href="#">여행정보공유</a></li>
