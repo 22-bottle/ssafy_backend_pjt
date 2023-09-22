@@ -1,5 +1,6 @@
 package com.ssafy.member.model.service;
 
+import com.ssafy.member.dto.MemberDto;
 import com.ssafy.member.model.dao.MemberDao;
 import com.ssafy.member.model.dao.MemberDaoImpl;
 
@@ -14,6 +15,11 @@ public class MemberServiceImpl implements MemberService {
 	
 	public static MemberService getMemberService() {
 		return memberService;
+	}
+
+	@Override
+	public MemberDto loginMember(String userId, String userPw) throws Exception {
+		return memberDao.loginMember(userId, userPw);
 	}
 	
 }
