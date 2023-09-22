@@ -127,19 +127,6 @@
                         </form>
                     </div>
 
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" id="btn-poll-create" class="btn btn-primary btn-sm">
-                            투표생성
-                        </button>
-                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 설문조사 modal end -->
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
@@ -190,8 +177,8 @@
                 console.log(contentTypeId);
                 console.log(keyword);
                 
-                if (parseInt(areaCode)) queryString += `&areaCode=${areaCode}`;
-                if (parseInt(contentTypeId)) queryString += `&contentTypeId=${contentTypeId}`;
+                if (parseInt(areaCode)) queryString += "&areaCode=" + areaCode;
+                if (parseInt(contentTypeId)) queryString += "&contentTypeId=" + contentTypeId;
                 // if (!keyword) {
                 //   alert("검색어 입력 필수!!!");
                 //   return;
@@ -199,7 +186,7 @@
                 let service = ``;
                 if (keyword) {
                     service = `searchKeyword1`;
-                    queryString += `&keyword=${keyword}`;
+                    queryString += "&keyword=" + keyword;
                 } else {
                     service = `areaBasedList1`;
                 }
