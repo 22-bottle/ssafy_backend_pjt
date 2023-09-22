@@ -47,5 +47,51 @@ public class MemberDaoImpl implements MemberDao {
 		}
 		return memberDto;
 	}
+
+	@Override
+	public int joinMember(MemberDto memberDto) throws SQLException {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = dbUtil.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("insert into member (user_name, user_id, user_password, email_id, email_domain, join_date) \n");
+			sql.append("values (?, ?, ?, ?, ?, now())");
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, memberDto.getUserName());
+			pstmt.setString(2, memberDto.getUserId());
+			pstmt.setString(3, memberDto.getUserPwd());
+			pstmt.setString(4, memberDto.getEmailId());
+			pstmt.setString(5, memberDto.getEmailDomain());
+			cnt = pstmt.executeUpdate();
+		} finally {
+			dbUtil.close(pstmt, conn);
+		}
+		return cnt;
+	}
+
+	@Override
+	public int idCheck(String checkid) throws SQLException {
+		int cnt = 1;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dbUtil.getConnection();
+			StringBuilder loginMember = new StringBuilder();
+			loginMember.append("select count(user_id) \n");
+			loginMember.append("from member \n");
+			loginMember.append("where user_id = ? ");
+			pstmt = conn.prepareStatement(loginMember.toString());
+			pstmt.setString(1, checkid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			cnt = rs.getInt(1);
+		} finally {
+			dbUtil.close(rs, pstmt, conn);
+		}
+		return cnt;
+	}
 	
 }
