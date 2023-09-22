@@ -38,6 +38,25 @@ public class MemberController extends HttpServlet {
 		} else if (action.equals("logout")) {
 			path = logout(request, response);
 			redirect(request, response, path);
+		} else if (action.equals("joinform")) {
+			path = "member/joinform.jsp";
+			forward(request, response, path);
+		} else if (action.equals("join")) {
+			path = join(request, response);
+			redirect(request, response, path);
+		} else if (action.equals("idcheck")) {
+			String checkid = request.getParameter("checkid");
+			int cnt = 1;
+			try {
+				cnt = memberService.idCheck(checkid);
+			} catch (Exception e) {
+				e.printStackTrace();
+				cnt = 1;
+			}
+			response.setContentType("text/plain;charset=utf-8");
+			response.getWriter().print(checkid + "," + cnt);
+		} else if (action.equals("mypage")) {
+			
 		}
 		else {
 			redirect(request, response, path);
@@ -101,6 +120,23 @@ public class MemberController extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		return "";
+	}
+	
+	private String join(HttpServletRequest request, HttpServletResponse response) {
+		MemberDto memberDto = new MemberDto();
+		memberDto.setUserName(request.getParameter("username"));
+		memberDto.setUserId(request.getParameter("userid"));
+		memberDto.setUserPwd(request.getParameter("userpwd"));
+		memberDto.setEmailId(request.getParameter("emailid"));
+		memberDto.setEmailDomain(request.getParameter("emaildomain"));
+		try {
+			memberService.joinMember(memberDto);
+			return "/index.jsp";
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("msg", "회원가입 중 에러 발생!!!");
+			return "/error/error.jsp";
+		}
 	}
 
 }

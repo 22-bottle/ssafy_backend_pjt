@@ -21,5 +21,15 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDto loginMember(String userId, String userPw) throws Exception {
 		return memberDao.loginMember(userId, userPw);
 	}
+
+	@Override
+	public int joinMember(MemberDto memberDto) throws Exception {
+		return memberDao.joinMember(memberDto);
+	}
+
+	@Override
+	public int idCheck(String checkid) throws Exception {
+		return memberDao.idCheck(checkid);
+	}
 	
 }

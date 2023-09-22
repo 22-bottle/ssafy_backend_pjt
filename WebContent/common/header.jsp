@@ -35,13 +35,14 @@
 				<c:when test="${ empty userInfo }">
 					<ul class="navbar-nav">
 						<li class="nav-item"><a class="nav-link navbar-brand" href="${ root }/member?action=loginform">로그인</a></li>
-						<li class="nav-item"><a class="nav-link navbar-brand" href="${ root }/member?action=join">회원가입</a></li>
+						<li class="nav-item"><a class="nav-link navbar-brand" href="${ root }/member?action=joinform">회원가입</a></li>
 					</ul>
 				</c:when>
 				<%-- session에 userInfo 객체 있는 경우(로그인 O) --%>
 				<c:otherwise>
 					<ul class="navbar-nav me-2">
-						<li class="nav-item"><a class="nav-link disabled">${ userInfo.userId }님 반갑습니다.</a></li>
+						<li class="nav-item"><a class="nav-link disabled">${ userInfo.userId }님</a></li>
+						<li class="nav-item"><a class="nav-link" href="${ root }/member?action=mypage">마이페이지</a></li>
 						<li class="nav-item"><a class="nav-link" href="${ root }/member?action=logout">로그아웃</a></li>
 					</ul>
 				</c:otherwise>

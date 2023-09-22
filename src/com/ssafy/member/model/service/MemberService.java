@@ -5,5 +5,7 @@ import com.ssafy.member.dto.MemberDto;
 public interface MemberService {
 
 	MemberDto loginMember(String userId, String userPw) throws Exception;
+	int joinMember(MemberDto memberDto) throws Exception;
+	int idCheck(String checkid) throws Exception;
 
 }

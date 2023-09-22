@@ -15,7 +15,6 @@
 	<div class="container p-4">
 		<h2>로그인</h2>
 		<form action="${ root }/member?action=login" method="post">
-			<input type="hidden" name="action" value="login">
 			<div class="form-group">
 				<label for="id">id:</label> <input type="text" class="form-control"
 					id="id" name="id" placeholder="ID 입력"
