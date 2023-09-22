@@ -9,8 +9,7 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-white mt-3">
         <ul class="navbar-nav container">
-            <li href="#"><a href="#" onclick="javascript:mainpage();"><img src="assets/img/logo.png" width="120"
-                        alt=""></img></a></li>
+            <li><a href="${ root }"><img src="assets/img/logo.png" width="120" alt=""></img></a></li>
             <li class="nav-item"> <a class="navbar-brand font-weight-bold" href="./map.html">지역별관광지</a></li>
             <li class="nav-item"> <a class="navbar-brand" href="#">나의여행계획</a></li>
             <li class="nav-item"> <a class="navbar-brand" href="#">핫플자랑하기</a></li>
@@ -18,10 +17,8 @@
 
             <!-- 로그인 전 -->
             <ul id="login" class="navbar-nav">
-                <li class="nav-item"> <button class="nav-link navbar-brand" href="#" data-bs-toggle="modal"
-                        data-bs-target="#loginModal">로그인</button></li>
-                <li class="nav-item"> <button class="nav-link navbar-brand" href="#" data-bs-toggle="modal"
-                        data-bs-target="#pollModal">회원가입</button></li>
+                <li class="nav-item"><a class="nav-link navbar-brand" href="${ root }/member?action=loginform">로그인</a></li>
+                <li class="nav-item"><a class="nav-link navbar-brand" href="${ root }/member?action=join">회원가입</a></li>
             </ul>
 
             <!-- 로그인 후 -->
