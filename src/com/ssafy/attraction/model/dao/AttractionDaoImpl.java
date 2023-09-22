@@ -39,7 +39,9 @@ public class AttractionDaoImpl implements AttractionDao{
 			sql.append("select * ");
 			sql.append("from attraction_info where 1 \n");
 			if (sido != null) sql.append("and sido_code = " + sido + " ");
-			sql.append("where sido_code = ? and content_type_id = ? and keyword like concat('%', ?, '%') \n");
+			sql.append("where sido_code = ?")
+			if (content_id != null) sql.append("and content_type_id = ? \n");
+			if (title != null) sql.append("title like %title%"); 
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1, sido);
 			pstmt.setString(2, content_id);
