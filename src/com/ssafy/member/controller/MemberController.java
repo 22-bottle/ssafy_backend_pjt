@@ -27,7 +27,7 @@ public class MemberController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
-		
+
 		String path = "";
 		if (action.equals("loginform")) {
 			path = "member/loginform.jsp";
@@ -56,9 +56,15 @@ public class MemberController extends HttpServlet {
 			response.setContentType("text/plain;charset=utf-8");
 			response.getWriter().print(checkid + "," + cnt);
 		} else if (action.equals("mypage")) {
-			
-		}
-		else {
+			path = "member/mypage.jsp";
+			forward(request, response, path);
+		} else if (action.equals("modify")) {
+			path = modify(request, response);
+			redirect(request, response, path);
+		} else if (action.equals("withdraw")) {
+			path = withdraw(request, response);
+			redirect(request, response, path);
+		} else {
 			redirect(request, response, path);
 		}
 	}
@@ -106,12 +112,12 @@ public class MemberController extends HttpServlet {
 				}
 				return "/index.jsp";
 			} else {
-				request.setAttribute("msg", "아이디 또는 비밀번호 확인 후 다시 로그인하세요.");
+				request.setAttribute("msg", "�븘�씠�뵒 �삉�뒗 鍮꾨�踰덊샇 �솗�씤 �썑 �떎�떆 濡쒓렇�씤�븯�꽭�슂.");
 				return "/member/loginform.jsp";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("msg", "로그인 중 에러 발생!!!");
+			request.setAttribute("msg", "濡쒓렇�씤 以� �뿉�윭 諛쒖깮!!!");
 			return "/error/error.jsp";
 		}
 	}
@@ -134,7 +140,43 @@ public class MemberController extends HttpServlet {
 			return "/index.jsp";
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("msg", "회원가입 중 에러 발생!!!");
+			request.setAttribute("msg", "회원가입 중 오류 발생!!!");
+			return "/error/error.jsp";
+		}
+	}
+	
+	private String modify(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			HttpSession session = request.getSession();
+			MemberDto memberDto = (MemberDto) session.getAttribute("userInfo");
+			if(memberDto != null) {
+				memberDto.setUserName(request.getParameter("username"));
+				memberDto.setUserPwd(request.getParameter("userpwd"));
+				memberService.modifyMember(memberDto);
+				return "/index.jsp";
+			} else 
+				return "/member/login.jsp";
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("msg", "회원정보 수정 중 오류 발생!!!");
+			return "/error/error.jsp";
+		}
+	}
+	
+	private String withdraw(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			HttpSession session = request.getSession();
+			MemberDto memberDto = (MemberDto) session.getAttribute("userInfo");
+			if(memberDto != null) {
+				System.out.println(memberDto.getUserId());
+				memberService.withdrawMember(memberDto);
+				session.invalidate();
+				return "";
+			} else 
+				return "/member/login.jsp";
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("msg", "회원 탈퇴 중 오류 발생!!!");
 			return "/error/error.jsp";
 		}
 	}

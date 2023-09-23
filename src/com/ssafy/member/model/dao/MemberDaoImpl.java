@@ -93,5 +93,41 @@ public class MemberDaoImpl implements MemberDao {
 		}
 		return cnt;
 	}
+
+	@Override
+	public void modifyMember(MemberDto memberDto) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = dbUtil.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("update member set user_name = ?, user_password = ? \n");
+			sql.append("where user_id = ?");
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, memberDto.getUserName());
+			pstmt.setString(2, memberDto.getUserPwd());
+			pstmt.setString(3, memberDto.getUserId());
+			pstmt.executeUpdate();
+		} finally {
+			dbUtil.close(pstmt, conn);
+		}
+	}
+
+	@Override
+	public void withdrawMember(MemberDto memberDto) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = dbUtil.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("delete from member \n");
+			sql.append("where user_id = ?");
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, memberDto.getUserId());
+			pstmt.executeUpdate();
+		} finally {
+			dbUtil.close(pstmt, conn);
+		}
+	}
 	
 }

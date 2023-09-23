@@ -120,9 +120,7 @@
         } else if (!document.querySelector("#userpwd").value) {
           alert("비밀번호 입력!!");
           return;
-        } else if (
-          document.querySelector("#userpwd").value != document.querySelector("#pwdcheck").value
-        ) {
+        } else if (document.querySelector("#userpwd").value != document.querySelector("#pwdcheck").value) {
           alert("비밀번호 확인!!");
           return;
         } else {
@@ -161,7 +159,6 @@
     		pwdcheck.value = "";
     		resultDiv.innerHTML = "";
     		resultDiv2.innerHTML = "";
-    		
     	});
     </script>
 

@@ -31,5 +31,16 @@ public class MemberServiceImpl implements MemberService {
 	public int idCheck(String checkid) throws Exception {
 		return memberDao.idCheck(checkid);
 	}
+
+	@Override
+	public void modifyMember(MemberDto memberDto) throws Exception {
+		memberDao.modifyMember(memberDto);
+	}
+
+	@Override
+	public void withdrawMember(MemberDto memberDto) throws Exception {
+		memberDao.withdrawMember(memberDto);
+		
+	}
 	
 }
