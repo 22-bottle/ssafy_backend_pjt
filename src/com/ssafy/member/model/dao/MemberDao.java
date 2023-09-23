@@ -11,5 +11,6 @@ public interface MemberDao {
 	int idCheck(String checkid) throws SQLException;
 	void modifyMember(MemberDto memberDto) throws SQLException;
 	void withdrawMember(MemberDto memberDto) throws SQLException;
+	int findPwd(String userId) throws SQLException;
 
 }

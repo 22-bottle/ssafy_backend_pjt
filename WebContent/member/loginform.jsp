@@ -32,7 +32,7 @@
 			</div>
 			<div class="text-danger mb-2">${msg}</div>
 			<button type="submit" class="btn btn-primary">로그인</button>
-			<a class="btn btn-secondary" href="${root}">메인 페이지로</a>
+			<a class="btn btn-secondary" href="${ root }/member?action=findform">비밀번호 찾기</a>
 		</form>
 	</div>
 

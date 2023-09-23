@@ -64,6 +64,12 @@ public class MemberController extends HttpServlet {
 		} else if (action.equals("withdraw")) {
 			path = withdraw(request, response);
 			redirect(request, response, path);
+		} else if (action.equals("findform")) {
+			path = "member/findform.jsp";
+			forward(request, response, path);
+		} else if (action.equals("findpwd")) {
+			path = findpwd(request, response);
+			forward(request, response, path);
 		} else {
 			redirect(request, response, path);
 		}
@@ -112,12 +118,12 @@ public class MemberController extends HttpServlet {
 				}
 				return "/index.jsp";
 			} else {
-				request.setAttribute("msg", "�븘�씠�뵒 �삉�뒗 鍮꾨�踰덊샇 �솗�씤 �썑 �떎�떆 濡쒓렇�씤�븯�꽭�슂.");
+				request.setAttribute("msg", "아이디 또는 비밀번호 확인 후 다시 로그인하세요.");
 				return "/member/loginform.jsp";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("msg", "濡쒓렇�씤 以� �뿉�윭 諛쒖깮!!!");
+			request.setAttribute("msg", "로그인 중 에러 발생!!!");
 			return "/error/error.jsp";
 		}
 	}
@@ -168,7 +174,6 @@ public class MemberController extends HttpServlet {
 			HttpSession session = request.getSession();
 			MemberDto memberDto = (MemberDto) session.getAttribute("userInfo");
 			if(memberDto != null) {
-				System.out.println(memberDto.getUserId());
 				memberService.withdrawMember(memberDto);
 				session.invalidate();
 				return "";
@@ -177,6 +182,24 @@ public class MemberController extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("msg", "회원 탈퇴 중 오류 발생!!!");
+			return "/error/error.jsp";
+		}
+	}
+	
+	private String findpwd(HttpServletRequest request, HttpServletResponse response) {
+		String userId = request.getParameter("id");
+		try {
+			int cnt = memberService.findPwd(userId);
+			if(cnt != 0) {
+				request.setAttribute("msg", "비밀번호가 1234로 초기화 되었습니다.");
+				return "/member/findform.jsp";
+			} else {
+				request.setAttribute("msg", "존재하지 않는 아이디입니다.");
+				return "/member/findform.jsp";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("msg", "비밀번호 찾기 중 에러 발생!!!");
 			return "/error/error.jsp";
 		}
 	}

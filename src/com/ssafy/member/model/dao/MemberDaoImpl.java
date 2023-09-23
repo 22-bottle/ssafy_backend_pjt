@@ -129,5 +129,27 @@ public class MemberDaoImpl implements MemberDao {
 			dbUtil.close(pstmt, conn);
 		}
 	}
+
+	@Override
+	public int findPwd(String userId) throws SQLException {
+		int cnt = idCheck(userId);
+		if (cnt != 0) {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			try {
+				conn = dbUtil.getConnection();
+				StringBuilder sql = new StringBuilder();
+				sql.append("update member set user_password = ? \n");
+				sql.append("where user_id = ?");
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setString(1, "1234");
+				pstmt.setString(2, userId);
+				pstmt.executeUpdate();
+			} finally {
+				dbUtil.close(pstmt, conn);
+			}
+		}
+		return cnt;
+	}
 	
 }

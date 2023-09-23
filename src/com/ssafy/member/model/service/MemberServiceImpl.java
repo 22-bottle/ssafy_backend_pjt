@@ -40,7 +40,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void withdrawMember(MemberDto memberDto) throws Exception {
 		memberDao.withdrawMember(memberDto);
-		
+	}
+
+	@Override
+	public int findPwd(String userId) throws Exception {
+		return memberDao.findPwd(userId);
 	}
 	
 }

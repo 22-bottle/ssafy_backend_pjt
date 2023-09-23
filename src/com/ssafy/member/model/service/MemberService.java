@@ -9,5 +9,6 @@ public interface MemberService {
 	int idCheck(String checkid) throws Exception;
 	void modifyMember(MemberDto memberDto) throws Exception;
 	void withdrawMember(MemberDto memberDto) throws Exception;
+	int findPwd(String userId) throws Exception;
 
 }
