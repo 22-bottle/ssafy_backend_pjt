@@ -1,2 +1,28 @@
-# ssafy_backend_pjt
-# ssafy_backend_pjt
+# 대전 5반 8팀 - Backend Project
+## 팀장 : 이희병 / 팀원 : 김혜지
+---
+## 목표
+- Servlet과 JSP를 활용하여 MVC architecture로 웹 서버 구축
+
+## 개발 언어 및 환경
+- Java, Eclipse, Tomcaat, MySQL
+
+## 구현 내용
+- 지역과 컨텐츠 별 관광지 정보 조회
+- 회원 관리
+
+## 실행 화면
+- 메인 페이지
+
+- 회원가입
+
+- 로그인 및 로그아웃
+
+- 비밀번호 찾기
+
+- 마이페이지 : 정보 수정 및 회원 탈퇴
+
+
+## 추가할 사항
+- 조회한 관광지를 활용한 여행 계획 및 경로 저장
+- 지도와 사진을 활용한 hotplace 등록
