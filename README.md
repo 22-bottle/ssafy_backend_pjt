@@ -27,6 +27,9 @@
 - 마이페이지 : 정보 수정 및 회원 탈퇴
 ![image](https://github.com/22-bottle/ssafy_backend_pjt/assets/101461544/4a700297-f0ff-4d5c-a4c9-9b2a3b11ed75)
 
+- 관광지 검색 : 지역 및 관광지 유형 선택
+![image](https://github.com/22-bottle/ssafy_backend_pjt/assets/73926423/42d096d9-6b6a-426e-8fe9-5d85cc495222)
+
 ## 추가할 사항
 - 조회한 관광지를 활용한 여행 계획 및 경로 저장
 - 지도와 사진을 활용한 hotplace 등록
