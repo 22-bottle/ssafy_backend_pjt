@@ -1,62 +1,67 @@
-package com.ssafy.attraction.model.dao;
+package com.ssafy.attraction.controller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.ssafy.attraction.dto.AttractionDto;
-import com.ssafy.util.DBUtil;
+import com.ssafy.attraction.model.service.AttractionService;
+import com.ssafy.attraction.model.service.AttractionServiceImpli;
 
 
-public class AttractionDaoImpl implements AttractionDao{
-
-	private static AttractionDao attractionDao;
-	private DBUtil dbUtil;
+@WebServlet("/attraction")
+public class AttractionController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	
-	private AttractionDaoImpl() {
-		dbUtil = DBUtil.getInstance();
+	private AttractionService attractionService;
+
+	public void init() {
+		attractionService = AttractionServiceImpli.getAttractionService();
 	}
-	
-	public static AttractionDao getAttractionDao() {
-		if (attractionDao == null)
-			attractionDao = new AttractionDaoImpl();
-		return attractionDao;
-	}
-	
-	@Override
-	public List<AttractionDto> searchAttraction(String sido, String content_id, String title) throws SQLException {
-		List<AttractionDto> list = new ArrayList<AttractionDto>();
-		AttractionDto attractionDto = null;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			conn = dbUtil.getConnection();
-			StringBuilder sql = new StringBuilder();
-			sql.append("select * ");
-			sql.append("from attraction_info where 1 \n");
-			if (sido != null) sql.append("and sido_code = " + sido + " ");
-			sql.append("where sido_code = ?");
-			if (content_id != null) sql.append("and content_type_id = ? \n");
-			if (title != null) sql.append("title like %title%"); 
-			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setString(1, sido);
-			pstmt.setString(2, content_id);
-			pstmt.setString(3, title);
-			while (rs.next()) {
-				attractionDto = new AttractionDto();
-				attractionDto.setSido_code(rs.getString("sido_code"));
-				attractionDto.setContent_type_id(rs.getString("content_type_id"));
-				attractionDto.setTitle(rs.getString("title"));
-				list.add(attractionDto);
-			}
-		} finally {
-			dbUtil.close(rs, pstmt, conn);
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = request.getParameter("action");
+
+		String path = "";
+		if (action.equals("list")) {
+			path = list(request, response);
+			forward(request, response, path);
 		}
-		return list;
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		doGet(request, response);
 	}
 	
+	private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
+		RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+		dispatcher.forward(request, response);
+	}
+
+	private void redirect(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+		response.sendRedirect(request.getContextPath() + path);
+	}
+	
+	private String list(HttpServletRequest request, HttpServletResponse response) {
+		String areaCode = request.getParameter("areaCode");
+		String contentTypeId = request.getParameter("contentTypeId");
+		String keyword = request.getParameter("keyword");
+		try {
+			List<AttractionDto> list = attractionService.searchAttraction(areaCode, contentTypeId, keyword);
+			request.setAttribute("attractions", list);
+			return "/map.jsp";
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("msg", "관광지 정보 검색 중 문제 발생!!!");
+			return "/error/error.jsp";
+		}
+	}
+
 }
