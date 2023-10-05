@@ -34,11 +34,11 @@ public class AttractionDaoImpl implements AttractionDao {
 			StringBuilder sql = new StringBuilder();
 			sql.append("select * \n");
 			sql.append("from attraction_info \n");
-			sql.append("where sido_code = ? and content_id = ? and title = %?%");
+			sql.append("where sido_code = ? and content_type_id = ? and title like ?");
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1, sido);
 			pstmt.setString(2, content_id);
-			pstmt.setString(3, title);
+			pstmt.setString(3, "%" + title + "%");
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				AttractionDto attractionDto = new AttractionDto();
