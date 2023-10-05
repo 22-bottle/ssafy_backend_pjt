@@ -1,67 +1,68 @@
-package com.ssafy.attraction.controller;
+package com.ssafy.attraction.model.dao;
 
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.ssafy.attraction.dto.AttractionDto;
-import com.ssafy.attraction.model.service.AttractionService;
-import com.ssafy.attraction.model.service.AttractionServiceImpli;
+import com.ssafy.util.DBUtil;
 
-
-@WebServlet("/attraction")
-public class AttractionController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class AttractionDaoImpl implements AttractionDao {
 	
-	private AttractionService attractionService;
-
-	public void init() {
-		attractionService = AttractionServiceImpli.getAttractionService();
-	}
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String action = request.getParameter("action");
-
-		String path = "";
-		if (action.equals("list")) {
-			path = list(request, response);
-			forward(request, response, path);
-		}
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-		doGet(request, response);
+	private static AttractionDao attractionDao = new AttractionDaoImpl();
+	private DBUtil dbUtil;
+	
+	private AttractionDaoImpl() {
+		dbUtil = DBUtil.getInstance();
 	}
 	
-	private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-		dispatcher.forward(request, response);
+	public static AttractionDao getAttractionDao() {
+		return attractionDao;
 	}
 
-	private void redirect(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
-		response.sendRedirect(request.getContextPath() + path);
-	}
-	
-	private String list(HttpServletRequest request, HttpServletResponse response) {
-		String areaCode = request.getParameter("areaCode");
-		String contentTypeId = request.getParameter("contentTypeId");
-		String keyword = request.getParameter("keyword");
+	@Override
+	public List<AttractionDto> searchAttraction(String sido, String content_id, String title) throws SQLException {
+		List<AttractionDto> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
-			List<AttractionDto> list = attractionService.searchAttraction(areaCode, contentTypeId, keyword);
-			request.setAttribute("attractions", list);
-			return "/map.jsp";
-		} catch (Exception e) {
-			e.printStackTrace();
-			request.setAttribute("msg", "관광지 정보 검색 중 문제 발생!!!");
-			return "/error/error.jsp";
+			conn = dbUtil.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * \n");
+			sql.append("from attraction_info \n");
+			sql.append("where sido_code = ? and content_id = ? and title = %?%");
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, sido);
+			pstmt.setString(2, content_id);
+			pstmt.setString(3, title);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				AttractionDto attractionDto = new AttractionDto();
+				attractionDto.setContent_id(rs.getString("content_id"));
+				attractionDto.setContent_type_id(rs.getString("content_type_id"));
+				attractionDto.setTitle(rs.getString("title"));
+				attractionDto.setAddr1(rs.getString("addr1"));
+				attractionDto.setAddr2(rs.getString("addr2"));
+				attractionDto.setZipcode(rs.getString("zipcode"));
+				attractionDto.setTel(rs.getString("tel"));
+				attractionDto.setFirst_image(rs.getString("first_image"));
+				attractionDto.setFirst_image2(rs.getString("first_image2"));
+				attractionDto.setReadcount(rs.getString("readcount"));
+				attractionDto.setSido_code(rs.getString("sido_code"));
+				attractionDto.setGugun_code(rs.getString("gugun_code"));
+				attractionDto.setLatitude(rs.getString("latitude"));
+				attractionDto.setLongtitude(rs.getString("longitude"));
+				attractionDto.setMlevel(rs.getString("mlevel"));
+				list.add(attractionDto);
+			}
+		} finally {
+			dbUtil.close(rs, pstmt, conn);
 		}
+		return list;
 	}
 
 }

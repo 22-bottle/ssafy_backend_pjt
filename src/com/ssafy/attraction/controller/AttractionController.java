@@ -29,7 +29,11 @@ public class AttractionController extends HttpServlet {
 		String action = request.getParameter("action");
 
 		String path = "";
-		if (action.equals("list")) {
+		if (action.equals("map")) {
+			path = "/attraction/map.jsp";
+			redirect(request, response, path);
+		} else if (action.equals("list")) {
+			System.out.println("ASDFASDFASDF");
 			path = list(request, response);
 			forward(request, response, path);
 		}
