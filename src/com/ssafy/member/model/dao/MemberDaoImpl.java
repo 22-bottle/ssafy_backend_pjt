@@ -10,7 +10,7 @@ import com.ssafy.util.DBUtil;
 
 public class MemberDaoImpl implements MemberDao {
 
-	private static MemberDao memberDao = new MemberDaoImpl();
+	private static MemberDao member = new MemberDaoImpl();
 	private DBUtil dbUtil;
 	
 	private MemberDaoImpl() {
@@ -18,7 +18,7 @@ public class MemberDaoImpl implements MemberDao {
 	}
 	
 	public static MemberDao getMemberDao() {
-		return memberDao;
+		return member;
 	}
 
 	@Override
