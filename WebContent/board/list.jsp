@@ -1,10 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/header.jsp" %>
-		
+		<%@ include file="/common/confirm.jsp" %>
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+          <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+            <mark class="sky">글목록</mark>
+          </h2>
+        </div>
         <div class="col-lg-8 col-md-10 col-sm-12">
           <div class="row align-self-center mb-2">
-            
+            <div class="col-md-2 text-start">
+              <button type="button" id="btn-mv-register" class="btn btn-outline-primary btn-sm">
+                글쓰기
+              </button>
+            </div>
             <div class="col-md-7 offset-3">
               <form class="d-flex" id="form-search" action="">
                 <input type="hidden" name="action" value="list"/>
@@ -27,8 +37,7 @@
               </form>
             </div>
           </div>
-          <div class="row justify-content-center">
-          <table class="table table-hover" >
+          <table class="table table-hover">
             <thead>
               <tr class="text-center">
                 <th scope="col">글번호</th>
@@ -63,9 +72,8 @@
         <div class="row">
           ${navigation.navigator}
         </div>
-       </div>
-       
-    
+      </div>
+    </div>
     <form id="form-param" method="get" action="">
       <input type="hidden" id="p-action" name="action" value="">
       <input type="hidden" id="p-pgno" name="pgno" value="">

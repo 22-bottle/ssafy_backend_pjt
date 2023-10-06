@@ -1,11 +1,15 @@
 package com.ssafy.board.dto;
 
+import java.util.List;
+
 public class BoardDto {
 	private int article_no;
 	private String user_id;
 	private String subject;
 	private String content;
 	private String register_time;
+	private List<ReplyDto> replies;
+	
 	public int getArticle_no() {
 		return article_no;
 	}
