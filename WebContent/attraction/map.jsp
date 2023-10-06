@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,26 +22,38 @@
 					role="alert">전국 관광지 정보</div>
 				<!-- 관광지 검색 start -->
 				<form class="d-flex my-3">
-					<input type="hidden" name="action" value="list"> <select
-						id="search-area" class="form-select me-2" name="areaCode">
-						<option value="0" selected>검색 할 지역 선택</option>
-					</select> <select id="search-content-id" class="form-select me-2"
-						name="contentTypeId">
-						<option value="0" selected>관광지 유형</option>
-						<option value="12">관광지</option>
-						<option value="14">문화시설</option>
-						<option value="15">축제공연행사</option>
-						<option value="25">여행코스</option>
-						<option value="28">레포츠</option>
-						<option value="32">숙박</option>
-						<option value="38">쇼핑</option>
-						<option value="39">음식점</option>
-					</select> <input id="search-keyword" class="form-control me-2" type="search"
+					<select name="sido" id="sido" class="dropdown-toggle ms-3 me-3" required >
+				    	<option value="" selected disabled hidden>시도선택</option>
+				      	<c:forEach items="${sidoList}" var="sidoItem">
+				        	<option value="${sidoItem.sido_code}">${sidoItem.sido_name}</option>
+				      	</c:forEach>
+				    </select>
+					<select name="gugun" id="gugun" class="dropdown-toggle ms-3 me-3" required></select>
+					<input id="search-keyword" class="form-control me-2" type="search"
 						placeholder="검색어" aria-label="검색어" name="keyword" />
 					<button id="btn-search" class="btn btn-outline-success"
 						type="button">검색</button>
 				</form>
 				<div id="map" style="width: 1500px; height: 800px;"></div>
+				
+				<script type="text/javascript">
+				    document.querySelector("#sido").addEventListener("change", function(e) {
+						let code = e.target.value;
+						fetch("${root}/attraction?action=getGugun&code="+code)
+							.then(function(res){return res.json()})
+							.then(function(data){
+								const gugunSelect = document.querySelector("#gugun");
+				            	gugunSelect.innerHTML = '<option value="" selected disabled hidden>구군선택</option>';
+								data.forEach(function(item) {
+									const option = document.createElement("option");
+				                	option.value = item.gugun_code;
+				                	option.textContent = item.gugun_name;
+				                	gugunSelect.appendChild(option);
+						      	});
+							})
+						});
+				</script>
+				
 				<script
 					src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 					integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
@@ -48,29 +61,7 @@
 				<script type="text/javascript"
 					src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a60a747c3ce60979f91fdeb2cb8081a7&libraries=services,clusterer,drawing"></script>
 				<script>
-		            // index page 로딩 후 전국의 시도 설정.
-		            var serviceKey = "Vy5tpdZA4XGpjOZ2EdoYW6D33KzLN9NnVuTDRUEJmYFWO5D3Cs6djsqsCQ%2Fewb3744vH5GXZgULh9enBGNr67A%3D%3D"
-		            let areaUrl =
-		                "https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=" +
-		                serviceKey +
-		                "&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json";
-		
-		            fetch(areaUrl, { method: "GET" })
-		                .then((response) => response.json())
-		                .then((data) => makeOption(data));
-		
-		            function makeOption(data) {
-		                let areas = data.response.body.items.item;
-		                let sel = document.getElementById("search-area");
-		                areas.forEach((area) => {
-		                    let opt = document.createElement("option");
-		                    opt.setAttribute("value", area.code);
-		                    opt.appendChild(document.createTextNode(area.name));
-		                    sel.appendChild(opt);
-		                });
-		            }
-		            
-		            var positions; // marker 배열.
+					var positions; // marker 배열.
 		            var markers = [];
 		            function makeList(data) {
 		            	for (let i = 0; i < markers.length; i++) {
@@ -129,9 +120,9 @@
 		            
 		            let searchBtn = document.getElementById("btn-search");
 		            searchBtn.addEventListener("click", () => {
-		            	let searchArea = document.getElementById("search-area");
+		            	let searchArea = document.getElementById("sido");
 		            	let areaCode = searchArea.value;
-		            	let searchContentId = document.getElementById("search-content-id");
+		            	let searchContentId = document.getElementById("gugun");
 		            	let contentTypeId = searchContentId.value;
 		            	let searchKeyword = document.getElementById("search-keyword");
 		            	let keyword = searchKeyword.value;

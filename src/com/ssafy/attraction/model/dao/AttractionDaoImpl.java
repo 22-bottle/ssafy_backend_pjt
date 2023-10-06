@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssafy.attraction.dto.AttractionDto;
+import com.ssafy.attraction.dto.GugunDto;
+import com.ssafy.attraction.dto.SidoDto;
 import com.ssafy.util.DBUtil;
 
 public class AttractionDaoImpl implements AttractionDao {
@@ -34,7 +36,7 @@ public class AttractionDaoImpl implements AttractionDao {
 			StringBuilder sql = new StringBuilder();
 			sql.append("select * \n");
 			sql.append("from attraction_info \n");
-			sql.append("where sido_code = ? and content_type_id = ? and title like ?");
+			sql.append("where sido_code = ? and gugun_code = ? and title like ?");
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setString(1, sido);
 			pstmt.setString(2, content_id);
@@ -58,6 +60,58 @@ public class AttractionDaoImpl implements AttractionDao {
 				attractionDto.setLongtitude(rs.getString("longitude"));
 				attractionDto.setMlevel(rs.getString("mlevel"));
 				list.add(attractionDto);
+			}
+		} finally {
+			dbUtil.close(rs, pstmt, conn);
+		}
+		return list;
+	}
+
+	@Override
+	public List<SidoDto> getSido() throws SQLException {
+		List<SidoDto> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dbUtil.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * \n");
+			sql.append("from sido \n");
+			pstmt = conn.prepareStatement(sql.toString());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				SidoDto sidoDto = new SidoDto();
+				sidoDto.setSido_code(rs.getString("sido_code"));
+				sidoDto.setSido_name(rs.getString("sido_name"));
+				list.add(sidoDto);
+			}
+		} finally {
+			dbUtil.close(rs, pstmt, conn);
+		}
+		return list;
+	}
+
+	@Override
+	public List<GugunDto> getGugun(String sido_code) throws SQLException {
+		List<GugunDto> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dbUtil.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("select * \n");
+			sql.append("from gugun where sido_code = ?\n");
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, sido_code);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				GugunDto gugunDto = new GugunDto();
+				gugunDto.setGugun_code(rs.getString("gugun_code"));
+				gugunDto.setGugun_name(rs.getString("gugun_name"));
+				gugunDto.setSido_code(rs.getString("sido_code"));
+				list.add(gugunDto);
 			}
 		} finally {
 			dbUtil.close(rs, pstmt, conn);
