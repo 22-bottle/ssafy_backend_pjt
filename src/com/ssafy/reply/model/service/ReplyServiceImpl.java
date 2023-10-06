@@ -22,4 +22,9 @@ public class ReplyServiceImpl implements ReplyService {
 		replyDao.write(replyDto);
 	}
 
+	@Override
+	public void delete(String reply_no) throws Exception {
+		replyDao.delete(reply_no);
+	}
+
 }

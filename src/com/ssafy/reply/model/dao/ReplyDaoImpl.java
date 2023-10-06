@@ -43,4 +43,21 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 	}
 
+	@Override
+	public void delete(String reply_no) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = dbUtil.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("delete from reply \n");
+			sql.append("where reply_no = ?");
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, reply_no);
+			pstmt.executeUpdate();
+		} finally {
+			dbUtil.close(pstmt, conn);
+		}
+	}
+
 }

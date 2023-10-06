@@ -8,4 +8,6 @@ public interface ReplyDao {
 
 	void write(ReplyDto replyDto);
 
+	void delete(String reply_no) throws SQLException;
+
 }

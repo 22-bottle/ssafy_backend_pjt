@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ssafy.board.model.BoardDto;
 import com.ssafy.member.dto.MemberDto;
 import com.ssafy.reply.dto.ReplyDto;
 import com.ssafy.reply.model.service.ReplyService;
@@ -36,7 +35,29 @@ public class ReplyController extends HttpServlet {
 		if (action.equals("write")) {
 			path = write(request, response);
 			redirect(request, response, path);
+		} else if (action.equals("delete")) {
+			path = delete(request, response);
+			redirect(request, response, path);
 		}
+	}
+
+	private String delete(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		MemberDto memberDto = (MemberDto) session.getAttribute("userInfo");
+		if(memberDto != null) {
+			int article_no = Integer.parseInt(request.getParameter("article_no"));
+			String reply_no = request.getParameter("reply_no");
+			try {
+				replyService.delete(reply_no);
+				return "/article?action=view&articleno=" + article_no;
+			} catch (Exception e) {
+				e.printStackTrace();
+				request.setAttribute("msg", "글삭제 중 문제 발생!!!");
+				return "/error/error.jsp";
+			}
+			
+		} else
+			return "/member/loginform.jsp";
 	}
 
 	private String write(HttpServletRequest request, HttpServletResponse response) {
@@ -47,7 +68,6 @@ public class ReplyController extends HttpServlet {
 			replyDto.setUser_id(memberDto.getUserId());
 			replyDto.setContent(request.getParameter("content"));
 			replyDto.setArticle_no(request.getParameter("article_no"));
-			System.out.println(replyDto.getContent());
 			try {
 				replyService.write(replyDto);
 				return "/article?action=view&articleno=" + replyDto.getArticle_no();

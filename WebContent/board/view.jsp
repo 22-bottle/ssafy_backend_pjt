@@ -103,8 +103,8 @@
     	let delete_btns = document.querySelectorAll(".delete_btn")
     	for (let i = 0; i < delete_btns.length; i++) {
     		delete_btns[i].addEventListener("click", function() {
-    			console.log("${root}/reply?action=delete&reply_no=${delete_btns[i].value}")
-    			fetch("${root}/reply?action=delete&reply_no=${delete_btns[i].value}");
+    			fetch("${root}/reply?action=delete&article_no=${article.articleNo}&reply_no=" + delete_btns[i].value)
+    				.then((request) => location.reload());
     		})
     	}
     </script>
