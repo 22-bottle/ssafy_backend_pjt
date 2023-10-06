@@ -1,6 +1,8 @@
 package com.ssafy.member.controller;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -89,9 +91,25 @@ public class MemberController extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + path);
 	}
 	
+	private String bytesToHex(byte[] bytes) {
+        StringBuilder builder = new StringBuilder();
+        for (byte b : bytes) {
+            builder.append(String.format("%02x", b));
+        }
+        return builder.toString();
+    }
+	
 	private String login(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("id");
-		String userPw = request.getParameter("pw");
+		String userPw = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(request.getParameter("pw").getBytes());
+			userPw = bytesToHex(md.digest());
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			MemberDto memberDto = memberService.loginMember(userId, userPw);
 			if(memberDto != null) {
@@ -135,10 +153,19 @@ public class MemberController extends HttpServlet {
 	}
 	
 	private String join(HttpServletRequest request, HttpServletResponse response) {
-		MemberDto memberDto = new MemberDto();
+		MemberDto memberDto = new MemberDto();      
 		memberDto.setUserName(request.getParameter("username"));
 		memberDto.setUserId(request.getParameter("userid"));
-		memberDto.setUserPwd(request.getParameter("userpwd"));
+		String pwd = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(request.getParameter("userpwd").getBytes());
+			pwd = bytesToHex(md.digest());
+			memberDto.setUserPwd(pwd);
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		memberDto.setEmailId(request.getParameter("emailid"));
 		memberDto.setEmailDomain(request.getParameter("emaildomain"));
 		try {
@@ -157,7 +184,16 @@ public class MemberController extends HttpServlet {
 			MemberDto memberDto = (MemberDto) session.getAttribute("userInfo");
 			if(memberDto != null) {
 				memberDto.setUserName(request.getParameter("username"));
-				memberDto.setUserPwd(request.getParameter("userpwd"));
+				String userPw = null;
+				try {
+					MessageDigest md = MessageDigest.getInstance("SHA-256");
+					md.update(request.getParameter("userpwd").getBytes());
+					userPw = bytesToHex(md.digest());
+				} catch (NoSuchAlgorithmException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				memberDto.setUserPwd(userPw);
 				memberService.modifyMember(memberDto);
 				return "/index.jsp";
 			} else 
