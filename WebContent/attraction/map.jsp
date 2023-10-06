@@ -20,6 +20,7 @@
 			<div class="">
 				<div class="alert alert-primary mt-3 text-center fw-bold"
 					role="alert">전국 관광지 정보</div>
+					
 				<!-- 관광지 검색 start -->
 				<form class="d-flex my-3">
 					<select name="sido" id="sido" class="dropdown-toggle ms-3 me-3" required >
@@ -28,13 +29,16 @@
 				        	<option value="${sidoItem.sido_code}">${sidoItem.sido_name}</option>
 				      	</c:forEach>
 				    </select>
-					<select name="gugun" id="gugun" class="dropdown-toggle ms-3 me-3" required></select>
-					<input id="search-keyword" class="form-control me-2" type="search"
+				    <form class="d-flex my-3">
+					<select name="gugun" id="gugun" class="dropdown-toggle ms-3 me-3" required>
+						<option value="" selected disabled hidden>구군선택</option>
+					</select>
+					<input id="search-keyword" class="form-control me-3" type="search"
 						placeholder="검색어" aria-label="검색어" name="keyword" />
 					<button id="btn-search" class="btn btn-outline-success"
-						type="button">검색</button>
+						type="button" >검색</button>
 				</form>
-				<div id="map" style="width: 1500px; height: 800px;"></div>
+				<div id="map" style="width: 1300px; height: 800px;"></div>
 				
 				<script type="text/javascript">
 				    document.querySelector("#sido").addEventListener("change", function(e) {

@@ -68,7 +68,6 @@ public class BoardDaoImpl implements BoardDao {
 				boardDto.setSubject(rs.getString("subject"));
 				boardDto.setContent(rs.getString("content"));
 				boardDto.setRegister_time(rs.getString("register_time"));
-				
 				list.add(boardDto);
 			}
 		} catch (SQLException e) {

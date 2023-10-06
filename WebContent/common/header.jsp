@@ -41,7 +41,7 @@
 				<%-- session에 userInfo 객체 있는 경우(로그인 O) --%>
 				<c:otherwise>
 					<ul class="navbar-nav me-2">
-						<li class="nav-item"><a class="nav-link disabled">${ userInfo.userId }님</a></li>
+						<li class="nav-item"><a class="nav-link">${ userInfo.userId }님</a></li>
 						<li class="nav-item"><a class="nav-link" href="${ root }/member?action=mypage">마이페이지</a></li>
 						<li class="nav-item"><a class="nav-link" href="${ root }/member?action=logout">로그아웃</a></li>
 					</ul>

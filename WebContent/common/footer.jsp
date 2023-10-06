@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-	<footer class="navbar navbar-expand-md justify-content-end">
+	<footer class="navbar navbar-expand-md justify-content-center">
         <div class="row">
             <div class="col-md-12">
                 <ul class="navbar-nav">
