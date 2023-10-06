@@ -5,7 +5,7 @@
 - Servlet과 JSP를 활용하여 MVC architecture로 웹 서버 구축
 
 ## 개발 언어 및 환경
-- Java, Eclipse, Tomcaat, MySQL
+- Java, Eclipse, Tomcat, MySQL
 
 ## 구현 내용
 - 지역과 컨텐츠 별 관광지 정보 조회
