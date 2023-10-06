@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.board.model.BoardDto;
+import com.ssafy.reply.dto.ReplyDto;
 import com.ssafy.util.DBUtil;
 
 public class BoardDaoImpl implements BoardDao {
@@ -133,9 +134,7 @@ public class BoardDaoImpl implements BoardDao {
 		try {
 			conn = dbUtil.getConnection();
 			StringBuilder sql = new StringBuilder();
-			sql.append("select article_no, user_id, subject, content, hit, register_time \n");
-			sql.append("from board \n");
-			sql.append("where article_no = ?");
+			sql.append("select * from board b left join reply c on b.article_no=c.article_no where b.article_no = ? \n");
 			pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setInt(1, articleNo);
 			rs = pstmt.executeQuery();
@@ -147,6 +146,25 @@ public class BoardDaoImpl implements BoardDao {
 				boardDto.setContent(rs.getString("content"));
 				boardDto.setHit(rs.getInt("hit"));
 				boardDto.setRegisterTime(rs.getString("register_time"));
+				if (rs.getString("reply_no") != null) {
+					boardDto.setReplies(new ArrayList<>());
+					ReplyDto replyDto = new ReplyDto();
+					replyDto.setReply_no(rs.getString("reply_no"));
+					replyDto.setArticle_no(rs.getString("article_no"));
+					replyDto.setUser_id(rs.getString(9));
+					replyDto.setContent(rs.getString(10));
+					replyDto.setRegister_time(rs.getString(11));
+					boardDto.getReplies().add(replyDto);
+				}
+				while (rs.next()) {
+					ReplyDto replyDto = new ReplyDto();
+					replyDto.setReply_no(rs.getString("reply_no"));
+					replyDto.setArticle_no(rs.getString("article_no"));
+					replyDto.setUser_id(rs.getString(9));
+					replyDto.setContent(rs.getString(10));
+					replyDto.setRegister_time(rs.getString(11));
+					boardDto.getReplies().add(replyDto);
+				}
 			}
 		} finally {
 			dbUtil.close(rs, pstmt, conn);
