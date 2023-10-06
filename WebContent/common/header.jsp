@@ -26,8 +26,8 @@
         <ul class="navbar-nav container">
             <li><a href="${ root }"><img src="assets/img/logo.png" width="120" alt=""></img></a></li>
             <li class="nav-item"> <a class="navbar-brand font-weight-bold" href="${ root }/attraction?action=map">지역별관광지</a></li>
-            <li class="nav-item"> <a class="navbar-brand" href="#">나의여행계획</a></li>
-            <li class="nav-item"> <a class="navbar-brand" href="#">핫플자랑하기</a></li>
+            <li class="nav-item"> <a class="navbar-brand" href="${ root }/board?action=writeform">글쓰기</a></li>
+            <li class="nav-item"> <a class="navbar-brand" href="#">글목록보기</a></li>
             <li class="nav-item"> <a class="navbar-brand" href="#">여행정보공유</a></li>
             
             <c:choose>
