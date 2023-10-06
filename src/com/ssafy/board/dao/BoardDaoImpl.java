@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.ssafy.board.dto.BoardDto;
 import com.ssafy.util.DBUtil;
@@ -26,8 +27,7 @@ public class BoardDaoImpl implements BoardDao {
 	}
 	
 	@Override
-	public int writeArticle(BoardDto boardDto) {
-		int cnt = 0;
+	public void writeArticle(BoardDto boardDto) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -39,17 +39,16 @@ public class BoardDaoImpl implements BoardDao {
 			pstmt.setString(1, boardDto.getUser_id());
 			pstmt.setString(2, boardDto.getSubject());
 			pstmt.setString(3, boardDto.getContent());
-			cnt = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			dbUtil.close(pstmt, conn);
 		}
-		return cnt;
 	}
 
 	@Override
-	public List<BoardDto> listArticle() {
+	public List<BoardDto> listArticle(Map<String, Object> param) throws SQLException{
 		List<BoardDto> list = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;

@@ -14,7 +14,8 @@
 	<%-- 페이지만의 내용 --%>
 	<div class="container p-4">
 		<h2>글쓰기</h2>
-		<form action="${root}/board?action=writeform" method="post" action="">
+		<form id="form-register" method="post" action="">
+			<input type="hidden" name="action" value="write">
 
 			<div class="form-group">
 				<label for="id">제목:</label> <input type="text" class="form-control"
@@ -37,7 +38,7 @@
 		          alert("내용 입력!!");
 		          return;
 		        } else {
-		          let form = document.querySelector("#btn-register");
+		          let form = document.querySelector("#form-register");
 		          form.setAttribute("action", "${root}/board");
 		          form.submit();
 		        }
