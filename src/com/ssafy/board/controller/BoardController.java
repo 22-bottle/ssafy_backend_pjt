@@ -140,7 +140,6 @@ public class BoardController extends HttpServlet {
 	private String write(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		MemberDto memberDto = (MemberDto) session.getAttribute("userInfo");
-		System.out.println(memberDto.toString());
 		if (memberDto != null) {
 			BoardDto boardDto = new BoardDto();
 			boardDto.setUserId(memberDto.getUserId());

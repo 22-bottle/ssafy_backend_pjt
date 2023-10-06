@@ -1,19 +1,23 @@
-package com.ssafy.board.dto;
+package com.ssafy.reply.dto;
 
-import java.util.List;
-
-public class BoardDto {
-	private int article_no;
+public class ReplyDto {
+	
+	private String reply_no;
+	private String article_no;
 	private String user_id;
-	private String subject;
 	private String content;
 	private String register_time;
-	private List<ReplyDto> replies;
 	
-	public int getArticle_no() {
+	public String getReply_no() {
+		return reply_no;
+	}
+	public void setReply_no(String reply_no) {
+		this.reply_no = reply_no;
+	}
+	public String getArticle_no() {
 		return article_no;
 	}
-	public void setArticle_no(int article_no) {
+	public void setArticle_no(String article_no) {
 		this.article_no = article_no;
 	}
 	public String getUser_id() {
@@ -21,12 +25,6 @@ public class BoardDto {
 	}
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
-	}
-	public String getSubject() {
-		return subject;
-	}
-	public void setSubject(String subject) {
-		this.subject = subject;
 	}
 	public String getContent() {
 		return content;
@@ -41,5 +39,10 @@ public class BoardDto {
 		this.register_time = register_time;
 	}
 	
+	@Override
+	public String toString() {
+		return "ReplyDto [reply_no=" + reply_no + ", article_no=" + article_no + ", user_id=" + user_id + ", content="
+				+ content + ", register_time=" + register_time + "]";
+	}
 	
 }

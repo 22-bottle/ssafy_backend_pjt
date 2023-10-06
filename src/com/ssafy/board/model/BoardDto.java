@@ -1,5 +1,9 @@
 package com.ssafy.board.model;
 
+import java.util.List;
+
+import com.ssafy.reply.dto.ReplyDto;
+
 public class BoardDto {
 
 	private int articleNo;
@@ -8,6 +12,7 @@ public class BoardDto {
 	private String content;
 	private int hit;
 	private String registerTime;
+	private List<ReplyDto> replies;
 
 	public int getArticleNo() {
 		return articleNo;
@@ -55,6 +60,14 @@ public class BoardDto {
 
 	public void setRegisterTime(String registerTime) {
 		this.registerTime = registerTime;
+	}
+
+	public List<ReplyDto> getReplies() {
+		return replies;
+	}
+
+	public void setReplies(List<ReplyDto> replies) {
+		this.replies = replies;
 	}
 
 	@Override

@@ -46,12 +46,20 @@
             </div>
             
             <div>
+            	<c:forEach items="${ article.replies }" var="reply">
+            		<span>${ reply.content }</span>
+            		<button class="delete_btn" value="${ reply.reply_no }">삭제</button></br>
+            	</c:forEach>
+            </div>
+            
+            <div>
             	<div class="col-lg-8 col-md-10 col-sm-12">
           			<form id="reply-form" method="POST" action="">
-          				<input type="hidden" name="action" value="reply-write">
+          				<input type="hidden" name="action" value="write">
+          				<input type="hidden" name="article_no" value="${article.articleNo}">
             			<div class="mb-3">
               				<label for="content" class="form-label">댓글 : </label>
-              				<textarea class="form-control" id="reply" name="reply" rows="7"></textarea>
+              				<textarea class="form-control" id="reply" name="content" rows="7"></textarea>
             			</div>
             			<div class="col-auto text-center">
               				<button type="button" id="btn-reply" class="btn btn-outline-primary mb-3">댓글 작성</button>
@@ -81,13 +89,23 @@
     <script>
       document.querySelector("#btn-reply").addEventListener("click", function () {
         if (!document.querySelector("#reply").value) {
-          alert("제목 입력!!");
+          alert("댓글 입력!!");
           return;
         } else {
-          let form = document.querySelector("#form-register");
-          form.setAttribute("action", "${root}/article");
+          let form = document.querySelector("#reply-form");
+          form.setAttribute("action", "${root}/reply");
           form.submit();
         }
       });
+    </script>
+    
+    <script>
+    	let delete_btns = document.querySelectorAll(".delete_btn")
+    	for (let i = 0; i < delete_btns.length; i++) {
+    		delete_btns[i].addEventListener("click", function() {
+    			fetch("${root}/reply?action=delete&article_no=${article.articleNo}&reply_no=" + delete_btns[i].value)
+    				.then((request) => location.reload());
+    		})
+    	}
     </script>
 <%@ include file="/common/footer.jsp" %>
